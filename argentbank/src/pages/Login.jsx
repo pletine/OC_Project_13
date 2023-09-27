@@ -1,23 +1,27 @@
-import '../styles/main_style.scss';
+import "../styles/main_style.scss";
 
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import fetchData from '../_models/fetchData.js';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import fetchData from "../_models/fetchData.js";
 
 export default function Login() {
   const navigate = useNavigate();
+  const values = { email: "tony@stark.com", password: "password123" };
 
-  const login = () => {
-    let checkLogin = fetchData('http://localhost:3000/api/v1/user/login', {
-      email: 'test',
-      password: 'test',
-    });
-    console.log(checkLogin);
-    if (checkLogin) {
-      alert('Login OK');
-      navigate('/user/test');
+  const login = async (event) => {
+    event.preventDefault();
+
+    let response = await fetchData(
+      "http://localhost:3001/api/v1/user/login",
+      values
+    );
+    console.log(response);
+
+    if (response.status === 200) {
+      alert("Login OK");
+      navigate("/user/test");
     } else {
-      alert('Login Not OK');
+      alert("Login Not OK");
     }
   };
 

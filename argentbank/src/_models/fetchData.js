@@ -1,17 +1,17 @@
 const fetchData = async (url, info) => {
-  // Fetch Main Data
   const request = await fetch(url, {
-      method: 'GET',
+      method: 'POST',
       headers: {
           Accept: 'application/json',
-          Content_Type: 'application/json',
+          "Content-Type": "application/json",
       },
-      data: info,
+      body: JSON.stringify(info),
   });
+  
   const dataJson = await request.json();
-  const data = dataJson.data;
+  console.log(dataJson);
 
-  return data;
+  return dataJson;
 };
 
 export default fetchData;
