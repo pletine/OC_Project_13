@@ -1,9 +1,21 @@
-import argentBankLogo from '../assets/images/argentBankLogo.png';
+import argentBankLogo from "../assets/images/argentBankLogo.png";
 
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logOut } from "../redux";
 
-export default function Header({ signOut = false }) {
+export default function Header() {
+  const user = useSelector((state) => state.connectedUser[0]);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const disconnect = () => {
+    dispatch(logOut());
+    navigate("/");
+  };
+
   return (
     <nav className="main-nav">
       <Link className="main-nav-logo" to="/">
@@ -16,17 +28,16 @@ export default function Header({ signOut = false }) {
       </Link>
 
       <div>
-        <Link className="main-nav-item" to="/sign-in">
-          <i className="fa fa-user-circle"></i>
-          Sign In
-        </Link>
-        {signOut ? (
-          <Link className="main-nav-item" to="/">
+        {user.connected ? (
+          <button onClick={disconnect} className="main-nav-item">
             <i className="fa fa-sign-out"></i>
             Sign Out
-          </Link>
+          </button>
         ) : (
-          ''
+          <Link className="main-nav-item" to="/login">
+            <i className="fa fa-user-circle"></i>
+            Sign In
+          </Link>
         )}
       </div>
     </nav>

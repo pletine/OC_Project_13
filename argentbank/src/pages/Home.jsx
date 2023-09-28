@@ -1,11 +1,14 @@
-import '../styles/main_style.scss';
-import iconMoney from '../assets/images/icon-money.png';
-import iconSecurity from '../assets/images/icon-security.png';
-import iconChat from '../assets/images/icon-chat.png';
+import "../styles/main_style.scss";
+import iconMoney from "../assets/images/icon-money.png";
+import iconSecurity from "../assets/images/icon-security.png";
+import iconChat from "../assets/images/icon-chat.png";
 
-import React from 'react';
+import React from "react";
 
 export default function Home() {
+  const clearLocalStorage = () => {
+    localStorage.removeItem("user");
+  };
   return (
     <main>
       <div className="hero">
@@ -29,7 +32,9 @@ export default function Home() {
         </div>
         <div className="feature-item">
           <img src={iconMoney} alt="Chat Icon" className="feature-icon" />
-          <h3 className="feature-item-title">More savings means higher rates</h3>
+          <h3 className="feature-item-title">
+            More savings means higher rates
+          </h3>
           <p>
             The more you save with us, the higher your interest rate will be!
           </p>
@@ -43,6 +48,7 @@ export default function Home() {
           </p>
         </div>
       </section>
+      <button onClick={clearLocalStorage}>Clear Local Storage</button>
     </main>
   );
 }

@@ -1,15 +1,13 @@
-const fetchData = async (url, info) => {
+const fetchData = async (url, method, info) => {
   const request = await fetch(url, {
-      method: 'POST',
+      method: method,
       headers: {
           Accept: 'application/json',
           "Content-Type": "application/json",
       },
-      body: JSON.stringify(info),
+      body: info,
   });
-  
   const dataJson = await request.json();
-  console.log(dataJson);
 
   return dataJson;
 };
