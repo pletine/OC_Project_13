@@ -6,9 +6,6 @@ import iconChat from "../assets/images/icon-chat.png";
 import React from "react";
 
 export default function Home() {
-  const clearLocalStorage = () => {
-    localStorage.removeItem("user");
-  };
   return (
     <main>
       <div className="hero">
@@ -48,7 +45,6 @@ export default function Home() {
           </p>
         </div>
       </section>
-      <button onClick={clearLocalStorage}>Clear Local Storage</button>
     </main>
   );
 }
