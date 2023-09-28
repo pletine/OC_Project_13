@@ -10,6 +10,7 @@ export default function Header() {
   const user = useSelector((state) => state.connectedUser[0]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  console.log(user);
 
   const disconnect = () => {
     dispatch(logOut());
@@ -27,19 +28,25 @@ export default function Header() {
         <h1 className="sr-only">Argent Bank</h1>
       </Link>
 
-      <div>
-        {user.connected ? (
+      {user.connected ? (
+        <div>
+          <Link className="main-nav-item" to="/user">
+            <i className="fa fa-user-circle"></i>
+            {user.firstname}
+          </Link>
           <button onClick={disconnect} className="main-nav-item">
             <i className="fa fa-sign-out"></i>
             Sign Out
           </button>
-        ) : (
+        </div>
+      ) : (
+        <div>
           <Link className="main-nav-item" to="/login">
             <i className="fa fa-user-circle"></i>
             Sign In
           </Link>
-        )}
-      </div>
+        </div>
+      )}
     </nav>
   );
 }

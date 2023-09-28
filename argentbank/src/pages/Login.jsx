@@ -4,13 +4,19 @@ import "./login.scss";
 import React, { useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import fetchData from "../_models/fetchData.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logIn } from "../redux";
 
 export default function Login() {
+  const user = useSelector((state) => state.connectedUser[0]);
+
   const userStorage = localStorage.getItem("user");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  if (user.connected) {
+    navigate("/user");
+  }
 
   // If the user doesn't exist in the local storage, create a new one
   const nameRef = useRef(null);
