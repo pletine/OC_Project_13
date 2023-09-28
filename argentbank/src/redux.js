@@ -3,15 +3,17 @@ import { configureStore, createSlice } from '@reduxjs/toolkit'
 const connectedUser = createSlice({
     name: 'login',
     initialState: [
-        {connected: false, name: '', email: ''}
+        {connected: false, email: '', id: '', firstname: '', lastname: ''}
     ],
     reducers: {
         logIn: (state, action) => {
-            // {type : 'login/logIn', payload: {id: 1, name: 'toto', email: 'toto@toto'}}
+            // {type : 'login/logIn', payload: {email: 'toto@toto', token: '5fds8496fez'}}
             const user = state[0];
             user.connected = true;
+            user.id = action.payload.id;
             user.email = action.payload.email;
-            user.token = action.payload.token;
+            user.firstname = action.payload.firstname;
+            user.lastname = action.payload.lastname;
         },
 
         logOut: (state, action) => {

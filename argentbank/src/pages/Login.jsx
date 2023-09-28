@@ -1,12 +1,14 @@
 import "../styles/main_style.scss";
+import "./login.scss";
 
-import React, { useEffect, useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import fetchData from "../_models/fetchData.js";
 import { useDispatch } from "react-redux";
 import { logIn } from "../redux";
 
 export default function Login() {
+  const userStorage = localStorage.getItem("user");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -19,66 +21,82 @@ export default function Login() {
    * Create function to check the login informations
    * @param {*} event
    */
-  const login = async (event) => {
-    event.preventDefault();
 
-    // Check if the values are not empty
-    if (
-      nameRef.current.value !== "" &&
-      pwdRef.current.value !== "" &&
-      rememberRef.current.value !== ""
-    ) {
+  // Content of the page
+  const [content, setContent] = React.useState("");
+  const [userChoice, setUserChoice] = React.useState(false);
+
+  /**
+   * Update content with the local storage informations
+   */
+  useEffect(() => {
+    const login = async (event) => {
+      event.preventDefault();
+
+      // Check if the values are not empty
+      if (
+        nameRef.current.value === "" ||
+        pwdRef.current.value === "" ||
+        rememberRef.current.value === ""
+      ) {
+        alert("Veuillez entrer un nom d'utilisateur et un mot de passe");
+        return;
+      }
+
+      // Values not empty
       const values = JSON.stringify({
         email: nameRef.current.value,
         password: pwdRef.current.value,
       });
 
-      // Try to log the user in the application by requesting the API
-      let response = await fetchData(
+      // Try user connection values given in form
+      let responseLogin = await fetchData(
         "http://localhost:3001/api/v1/user/login",
         "POST",
         values
       );
 
-      // If answer is OK
-      if (response.status === 200) {
-        // Log user in the application
-        const userInfo = {
-          email: nameRef.current.value,
-          token: response.body.token,
-        };
-        dispatch(logIn(userInfo));
-
-        // Save user informations in local storage
-        if (rememberRef.current.checked) {
-          localStorage.setItem("user", JSON.stringify(userInfo));
-        }
-
-        // Go to the user page
-        navigate("/user");
-      } else {
-        // If answer is KO
+      // If error during connection
+      if (responseLogin.status !== 200) {
         alert("Mauvais identifiants");
+        return;
       }
-    } else {
-      // If values are empty
-      alert("Veuillez entrer un nom d'utilisateur et un mot de passe");
-    }
-  };
 
-  // Check if user informations are stored in local storage
-  useEffect(() => {
-    const userStorage = localStorage.getItem("user");
-    if (userStorage !== null) {
-      // If yes, log user in the application
-      const userStorageJsonData = JSON.parse(userStorage);
-      dispatch(logIn(userStorageJsonData));
+      // Get other informations about the user
+      let responseInfo = await fetchData(
+        "http://localhost:3001/api/v1/user/profile",
+        "POST",
+        "",
+        responseLogin.body.token
+      );
+
+      // If error during fetch of information
+      if (responseInfo.status !== 200) {
+        alert(
+          "Erreur lors de la récupération des informations de l'utilisateur, veuillez réessayer"
+        );
+        return;
+      }
+
+      // Connect the user in the application with Redux
+      const userInfo = {
+        id: responseInfo.body.id,
+        email: responseInfo.body.email,
+        firstname: responseInfo.body.firstName,
+        lastname: responseInfo.body.lastName,
+      };
+      dispatch(logIn(userInfo));
+
+      // Save user informations in local storage
+      if (rememberRef.current.checked) {
+        localStorage.setItem("user", JSON.stringify(userInfo));
+      }
+
+      // Go to the user page
       navigate("/user");
-    }
-  }, [dispatch, navigate]);
+    };
 
-  return (
-    <main className="main bg-dark">
+    const defaultContent = (
       <section className="sign-in-content">
         <i className="fa fa-user-circle sign-in-icon"></i>
         <h1>Sign In</h1>
@@ -101,6 +119,50 @@ export default function Login() {
           </button>
         </form>
       </section>
-    </main>
-  );
+    );
+
+    function connectStorage() {
+      const storeUserData = JSON.parse(userStorage);
+      console.log(storeUserData);
+      dispatch(logIn(storeUserData));
+      navigate("/user");
+    }
+
+    function newUser() {
+      setContent(defaultContent);
+      setUserChoice(false);
+    }
+
+    function deleteStorageUser(event) {
+      event.stopPropagation();
+      localStorage.removeItem("user");
+      setContent(defaultContent);
+    }
+
+    if (userStorage !== null && userChoice === false) {
+      let storeUserData = JSON.parse(userStorage);
+      setContent(
+        <section className="sign-in-content">
+          <div className="choose user" onClick={connectStorage}>
+            <i className="fa fa-user-circle sign-in-icon"></i>
+            <p>
+              {storeUserData.firstname} {storeUserData.lastname}
+            </p>
+            <i className="fa fa-solid fa-trash" onClick={deleteStorageUser}></i>
+          </div>
+          <div className="choose form" onClick={newUser}>
+            <i className="fa fa-user-circle sign-in-icon"></i>
+            <p>New user</p>
+          </div>
+        </section>
+      );
+    } else {
+      setContent(defaultContent);
+    }
+  }, [dispatch, navigate, userStorage, userChoice]);
+
+  /**
+   * Render the login page
+   */
+  return <main className="main bg-dark">{content}</main>;
 }

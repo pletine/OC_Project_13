@@ -1,0 +1,41 @@
+.sign-in-content {
+    box-sizing: border-box;
+    background-color: white;
+    width: 300px;
+    margin: 0 auto;
+    margin-top: 3rem;
+    padding: 2rem;
+}
+
+.choose {
+    background-color: #e7e7e7;
+    transition: box-shadow .3s border .3s;
+    border-radius: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    margin: 2em auto;
+    padding: 1em;
+
+    &:hover {
+        box-shadow: 0 0 11px rgba(33,33,33,.2);
+        border: 1px solid rgba(19, 19, 19, 0.2);
+        cursor: pointer;
+    }
+
+    i {
+        font-size: 3rem;
+    }
+
+    p {
+        width: 80%;
+    }
+
+    .fa-trash {
+        color:rgb(30, 48, 80, 0.5);
+        &:hover {
+            color:rgb(30, 48, 80, 1);
+        }
+    }
+}

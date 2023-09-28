@@ -1,10 +1,15 @@
-const fetchData = async (url, method, info) => {
+const fetchData = async (url, method = "GET", info, token = null) => {
+  const headers = new Headers();
+  headers.append("Accept", 'application/json');
+  headers.append("Content-Type", 'application/json');
+  
+  if(token) {
+    headers.append("Authorization", `Bearer ${token}`);
+  }
+
   const request = await fetch(url, {
       method: method,
-      headers: {
-          Accept: 'application/json',
-          "Content-Type": "application/json",
-      },
+      headers: headers,
       body: info,
   });
   const dataJson = await request.json();

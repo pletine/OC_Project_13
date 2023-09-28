@@ -10,22 +10,6 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import User from './pages/User';
 
-const handleKeyPress = (event) => {
-  switch(event.key) {
-    case 'm':
-      // Remove Local Storage 
-      localStorage.removeItem("user");
-      break;
-    case 'l':
-      // Clear all the local storage
-      localStorage.clear();
-      break;
-    default:
-      break;
-  }
-};
-document.addEventListener('keydown', handleKeyPress);
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -36,6 +20,7 @@ root.render(
         <Route path="" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/user" element={<User />} />
+        <Route path="*" element={<h1>404</h1>} />
       </Routes>
     </Router>
     <Footer />

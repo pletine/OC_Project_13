@@ -6,6 +6,10 @@ import { useSelector } from "react-redux";
 export default function User() {
   const user = useSelector((state) => state.connectedUser[0]);
 
+  const editName = () => {
+    console.log("edit");
+  };
+
   if (user.connected) {
     return (
       <main className="main bg-dark">
@@ -13,9 +17,11 @@ export default function User() {
           <h1>
             Welcome back
             <br />
-            Tony Jarvis!
+            {user.firstname} {user.lastname}
           </h1>
-          <button className="edit-button">Edit Name</button>
+          <button className="edit-button" onClick={editName}>
+            Edit Name
+          </button>
         </div>
         <section className="account">
           <div className="account-content-wrapper">
