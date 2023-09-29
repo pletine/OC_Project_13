@@ -1,3 +1,4 @@
+import "./header.scss";
 import argentBankLogo from "../assets/images/argentBankLogo.png";
 
 import React from "react";
@@ -10,7 +11,6 @@ export default function Header() {
   const user = useSelector((state) => state.connectedUser[0]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log(user);
 
   const disconnect = () => {
     dispatch(logOut());

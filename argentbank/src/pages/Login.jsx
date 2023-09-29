@@ -1,4 +1,3 @@
-import "../styles/main_style.scss";
 import "./login.scss";
 
 import React, { useRef, useEffect } from "react";
@@ -87,6 +86,7 @@ export default function Login() {
       // Connect the user in the application with Redux
       const userInfo = {
         id: responseInfo.body.id,
+        token: responseLogin.body.token,
         email: responseInfo.body.email,
         firstname: responseInfo.body.firstName,
         lastname: responseInfo.body.lastName,
@@ -129,7 +129,6 @@ export default function Login() {
 
     function connectStorage() {
       const storeUserData = JSON.parse(userStorage);
-      console.log(storeUserData);
       dispatch(logIn(storeUserData));
       navigate("/user");
     }

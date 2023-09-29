@@ -1,4 +1,5 @@
-import "../styles/main_style.scss";
+import "./home.scss";
+
 import iconMoney from "../assets/images/icon-money.png";
 import iconSecurity from "../assets/images/icon-security.png";
 import iconChat from "../assets/images/icon-chat.png";
