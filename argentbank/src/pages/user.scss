@@ -73,4 +73,28 @@
         width: 200px;
     }
 }
-  
+
+.change-user-info {
+    display: flex;
+    flex-grow: row nowrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 0.5rem;
+
+    &.inputs > input {
+        padding: 0.5rem 1rem;
+        border-radius: 10px;
+    }
+
+    &.buttons  > button{
+        padding: 0.5rem 1.2rem;
+        margin-left: 1rem;
+
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin-top: 1rem;
+        border-color: #00bc77;
+        background-color: #00bc77;
+        color: #fff;
+    }
+}

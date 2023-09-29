@@ -8,13 +8,6 @@ import fetchData from "../_models/fetchData.js";
 export default function User() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.connectedUser[0]);
-  let userInfo = {
-    id: user.id,
-    token: user.token,
-    email: user.email,
-    firstname: user.firstName,
-    lastname: user.lastName,
-  };
 
   const [content, setContent] = React.useState("");
   const [changeState, setChangeState] = React.useState(false);
@@ -23,6 +16,14 @@ export default function User() {
   const ChangLastName = React.useRef();
 
   useEffect(() => {
+    let userInfo = {
+      id: user.id,
+      token: user.token,
+      email: user.email,
+      firstname: user.firstName,
+      lastname: user.lastName,
+    };
+
     function editName(event) {
       event.preventDefault();
       setChangeState(true);
@@ -50,12 +51,12 @@ export default function User() {
           userInfo.lastname = ChangLastName.current.value;
           dispatch(logIn(userInfo));
         } else {
-          alert("Update failed");
+          alert("Update failed\nEssayer à nouveau");
         }
+        setChangeState(false);
       } else {
         alert("Veuillez entrer un prénom et un nom");
       }
-      setChangeState(false);
     }
 
     function cancelChange(event) {
@@ -100,7 +101,7 @@ export default function User() {
         </button>
       );
     }
-  }, [changeState, user]);
+  }, [changeState, dispatch, user]);
 
   if (user.connected) {
     return (
